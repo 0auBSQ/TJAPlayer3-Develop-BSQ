@@ -149,12 +149,9 @@ namespace TJAPlayer3
             Tile_Black = TxC(@$"Tile_Black.png");
             Menu_Title = TxC(@$"Menu_Title.png");
             Menu_Highlight = TxC(@$"Menu_Highlight.png");
-            Enum_Song = TxC(@$"Enum_Song.png");
             Loading = TxC(@$"Loading.png");
             Scanning_Loudness = TxC(@$"Scanning_Loudness.png");
-            Overlay = TxC(@$"Overlay.png");
-            Network_Connection = TxC(@$"Network_Connection.png");
-            Readme = TxC(@$"Readme.png");
+            /*
             NamePlate = new CTexture[2];
             NamePlateBase = TxC(@$"NamePlate.png");
             NamePlate_Extension = TxC(@$"NamePlate_Extension.png");
@@ -165,10 +162,9 @@ namespace TJAPlayer3
             NamePlate_Effect[2] = TxC(@$"9_NamePlateEffect{Path.DirectorySeparatorChar}GoldBStar.png");
             NamePlate_Effect[3] = TxC(@$"9_NamePlateEffect{Path.DirectorySeparatorChar}PurpleBStar.png");
             NamePlate_Effect[4] = TxC(@$"9_NamePlateEffect{Path.DirectorySeparatorChar}Slash.png");
+            */
 
-            TJAPlayer3.Skin.Config_NamePlate_Ptn_Title = System.IO.Directory.GetDirectories(CSkin.Path(BASE + @$"9_NamePlateEffect{Path.DirectorySeparatorChar}Title{Path.DirectorySeparatorChar}")).Length;
-            TJAPlayer3.Skin.Config_NamePlate_Ptn_Title_Boxes = new int[TJAPlayer3.Skin.Config_NamePlate_Ptn_Title];
-
+            /*
             NamePlate_Title = new CTexture[TJAPlayer3.Skin.Config_NamePlate_Ptn_Title][];
             NamePlate_Title_Big = new CTexture[TJAPlayer3.Skin.Config_NamePlate_Ptn_Title];
             NamePlate_Title_Small = new CTexture[TJAPlayer3.Skin.Config_NamePlate_Ptn_Title];
@@ -186,7 +182,14 @@ namespace TJAPlayer3
                 NamePlate_Title_Big[i] = TxC(@$"9_NamePlateEffect{Path.DirectorySeparatorChar}Title{Path.DirectorySeparatorChar}" + i.ToString() + @$"{Path.DirectorySeparatorChar}Big.png");
                 NamePlate_Title_Small[i] = TxC(@$"9_NamePlateEffect{Path.DirectorySeparatorChar}Title{Path.DirectorySeparatorChar}" + i.ToString() + @$"{Path.DirectorySeparatorChar}Small.png");
             }
+            */
 
+            listTexture.Add(lcBlackFade = new CLuaFadeScript(CSkin.Path("Modules/BlackFade")));
+            listTexture.Add(lcWhiteFade = new CLuaFadeScript(CSkin.Path("Modules/WhiteFade")));
+            listTexture.Add(lcResultFade = new CLuaFadeScript(CSkin.Path("Modules/ResultFade")));
+            listTexture.Add(lcAttention = new CLuaAttentionScript(CSkin.Path("Modules/Attention")));
+            listTexture.Add(lcEnumSong = new CLuaEnumSongsScript(CSkin.Path("Modules/EnumSongs")));
+            listTexture.Add(lcOverlay = new CLuaOverlayScript(CSkin.Path("Modules/Overlay")));
 
             #endregion
 
@@ -227,15 +230,8 @@ namespace TJAPlayer3
             #endregion
 
             #region 2_コンフィグ画面
-            //Config_Background = TxC(CONFIG + @$"Background.png");
-            //Config_Header = TxC(CONFIG + @$"Header.png");
-            Config_Cursor = TxC(CONFIG + @$"Cursor.png");
-            Config_ItemBox = TxC(CONFIG + @$"ItemBox.png");
-            Config_Arrow = TxC(CONFIG + @$"Arrow.png");
-            Config_KeyAssign = TxC(CONFIG + @$"KeyAssign.png");
-            Config_Font = TxC(CONFIG + @$"Font.png");
-            Config_Font_Bold = TxC(CONFIG + @$"Font_Bold.png");
-            Config_Enum_Song = TxC(CONFIG + @$"Enum_Song.png");
+            listTexture.Add(lcConfigStage = new CLuaConfigStageScript(CSkin.Path("Modules/ConfigStage")));
+            listTexture.Add(lcConfigFont = new CLuaConfigFontScript(CSkin.Path("Modules/ConfigFont")));
             #endregion
 
             #region 3_選曲画面
@@ -433,23 +429,10 @@ namespace TJAPlayer3
 
             #region 4_読み込み画面
 
-            SongLoading_Plate = TxC(SONGLOADING + @$"Plate.png");
-            SongLoading_Bg = TxC(SONGLOADING + @$"Bg.png");
-            SongLoading_BgWait = TxC(SONGLOADING + @$"Bg_Wait.png");
-            SongLoading_Chara = TxC(SONGLOADING + @$"Chara.png");
-            SongLoading_Fade = TxC(SONGLOADING + @$"Fade.png");
-            SongLoading_Bg_Dan = TxC(SONGLOADING + @$"Bg_Dan.png");
-
-            SongLoading_Plate_AI = TxC(SONGLOADING + @$"Plate_AI.png");
-            SongLoading_Bg_AI = TxC(SONGLOADING + @$"Bg_AI.png");
-            SongLoading_Bg_AI_Wait = TxC(SONGLOADING + @$"Bg_AI_Wait.png");
-            SongLoading_Fade_AI = TxC(SONGLOADING + @$"Fade_AI.png");
-            SongLoading_Fade_AI_Anime_Base = TxC(SONGLOADING + @$"Fade_AI_Anime_Base.png");
-            SongLoading_Fade_AI_Anime_Ring = TxC(SONGLOADING + @$"Fade_AI_Anime_Ring.png");
-            SongLoading_Fade_AI_Anime_NowLoading = TxC(SONGLOADING + @$"Fade_AI_Anime_NowLoading.png");
-            SongLoading_Fade_AI_Anime_Start = TxC(SONGLOADING + @$"Fade_AI_Anime_Start.png");
-            SongLoading_Fade_AI_Anime_LoadBar_Base = TxC(SONGLOADING + @$"Fade_AI_Anime_LoadBar_Base.png");
-            SongLoading_Fade_AI_Anime_LoadBar = TxC(SONGLOADING + @$"Fade_AI_Anime_LoadBar.png");
+            listTexture.Add(lcGameStartFade = new CLuaSongLoadingFadeScript(CSkin.Path("Modules/GameStartFade")));
+            listTexture.Add(lcAIGameStartFade = new CLuaSongLoadingFadeScript(CSkin.Path("Modules/AIGameStartFade")));
+            listTexture.Add(lcDanGameStartFade = new CLuaDanGameStartFadeScript(CSkin.Path("Modules/DanGameStartFade")));
+            listTexture.Add(lcTowerGameStartFade = new CLuaTowerGameStartFadeScript(CSkin.Path("Modules/TowerGameStartFade")));
 
             #endregion
 
@@ -1079,7 +1062,7 @@ namespace TJAPlayer3
             #endregion
 
             #region 7_終了画面
-            //Exit_Background = TxC(EXIT + @$"Background.png");
+            listTexture.Add(lcExitStage = new CLuaExitStageScript(CSkin.Path("Modules/ExitStage")));
             #endregion
 
             #region 7_AIResults
@@ -2536,7 +2519,7 @@ namespace TJAPlayer3
             foreach (var tex in listTexture)
             {
                 var texture = tex;
-                TJAPlayer3.tテクスチャの解放(ref texture);
+                TJAPlayer3.tDisposeSafely(ref texture);
                 texture?.Dispose();
                 texture = null;
             }
@@ -2562,21 +2545,15 @@ namespace TJAPlayer3
         public CTexture Tile_Black,
             Menu_Title,
             Menu_Highlight,
-            Enum_Song,
+            //Enum_Song,
             Loading,
-            Scanning_Loudness,
-            NamePlateBase,
-            NamePlate_Extension,
-            Overlay,
-            Readme,
-            Network_Connection;
-        public CTexture[] NamePlate;
-
-        public CTexture[] NamePlate_Effect = new CTexture[5];
-
-        public CTexture[][] NamePlate_Title;
-        public CTexture[] NamePlate_Title_Big;
-        public CTexture[] NamePlate_Title_Small;
+            Scanning_Loudness;
+        public CLuaFadeScript lcBlackFade;
+        public CLuaFadeScript lcWhiteFade;
+        public CLuaFadeScript lcResultFade;
+        public CLuaAttentionScript lcAttention;
+        public CLuaEnumSongsScript lcEnumSong;
+        public CLuaOverlayScript lcOverlay;
 
         #endregion
 
@@ -2597,16 +2574,8 @@ namespace TJAPlayer3
         #endregion
 
         #region 2_コンフィグ画面
-        public CTexture 
-            /*Config_Background,
-            Config_Header,*/
-            Config_Cursor,
-            Config_ItemBox,
-            Config_Arrow,
-            Config_KeyAssign,
-            Config_Font,
-            Config_Font_Bold,
-            Config_Enum_Song;
+        public CLuaConfigStageScript lcConfigStage;
+        public CLuaConfigFontScript lcConfigFont;
         #endregion
 
         #region 3_選曲画面
@@ -2726,23 +2695,10 @@ namespace TJAPlayer3
         #endregion
 
         #region 4_読み込み画面
-        public CTexture SongLoading_Plate,
-            SongLoading_Bg,
-            SongLoading_BgWait,
-            SongLoading_Chara,
-            SongLoading_Bg_Dan,
-            SongLoading_Fade,
-
-            SongLoading_Plate_AI,
-            SongLoading_Bg_AI,
-            SongLoading_Bg_AI_Wait,
-            SongLoading_Fade_AI,
-            SongLoading_Fade_AI_Anime_Base,
-            SongLoading_Fade_AI_Anime_Ring,
-            SongLoading_Fade_AI_Anime_NowLoading,
-            SongLoading_Fade_AI_Anime_Start,
-            SongLoading_Fade_AI_Anime_LoadBar_Base,
-            SongLoading_Fade_AI_Anime_LoadBar;
+        public CLuaSongLoadingFadeScript lcGameStartFade;
+        public CLuaSongLoadingFadeScript lcAIGameStartFade;
+        public CLuaDanGameStartFadeScript lcDanGameStartFade;
+        public CLuaTowerGameStartFadeScript lcTowerGameStartFade;
         #endregion
 
         #region 5_演奏画面
@@ -3002,8 +2958,7 @@ Result_Mountain = new CTexture[4]*/;
         #endregion
 
         #region 7_終了画面
-        //public CTexture Exit_Background/* , */
-        /*Exit_Text; */
+        public CLuaExitStageScript lcExitStage;
         #endregion
 
         #region [7_DanResults]
@@ -3144,7 +3099,7 @@ Result_Mountain = new CTexture[4]*/;
 
 
         #region [ 解放用 ]
-        public List<CTexture> listTexture = new List<CTexture>();
+        public List<IDisposable> listTexture = new List<IDisposable>();
         #endregion
 
     }

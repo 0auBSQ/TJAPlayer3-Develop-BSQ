@@ -16,35 +16,53 @@ namespace TJAPlayer3
 
 			TJAPlayer3.Skin.soundDanSelectBGM.tStop();
 			if (TJAPlayer3.stageSongSelect.nChoosenSongDifficulty[0] == (int)Difficulty.Dan)
-				this.counter = new CCounter(0, 1255, 1, TJAPlayer3.Timer);
-			else if (TJAPlayer3.ConfigIni.bAIBattleMode)
+			{
+                this.counter = new CCounter(0, 1255, 1, TJAPlayer3.Timer);
+                TJAPlayer3.Tx.lcDanGameStartFade.FadeOut();
+            }
+            else if (TJAPlayer3.stageSongSelect.nChoosenSongDifficulty[0] == (int)Difficulty.Tower)
+            {
+                this.counter = new CCounter(0, 1255, 1, TJAPlayer3.Timer);
+                TJAPlayer3.Tx.lcTowerGameStartFade.FadeOut();
+            }
+            else if (TJAPlayer3.ConfigIni.bAIBattleMode)
 			{
 				this.counter = new CCounter(0, 5500, 1, TJAPlayer3.Timer);
-			}
+                TJAPlayer3.Tx.lcAIGameStartFade.FadeOut();
+            }
 			else
 			{
 				this.counter = new CCounter(0, 3580, 1, TJAPlayer3.Timer);
-			}
+				TJAPlayer3.Tx.lcGameStartFade.FadeOut();
+            }
 		}
 		public void tフェードイン開始()
 		{
 			this.mode = EFIFOモード.フェードイン;
 
-			if (TJAPlayer3.stageSongSelect.nChoosenSongDifficulty[0] == (int)Difficulty.Dan)
-			{
-				this.counter = new CCounter(0, 255, 1, TJAPlayer3.Timer);
+            if (TJAPlayer3.stageSongSelect.nChoosenSongDifficulty[0] == (int)Difficulty.Dan)
+            {
+                this.counter = new CCounter(0, 255, 1, TJAPlayer3.Timer);
+                TJAPlayer3.Tx.lcDanGameStartFade.FadeIn();
 
-				TJAPlayer3.stage演奏ドラム画面.actDan.Start(TJAPlayer3.stage演奏ドラム画面.ListDan_Number);
-				TJAPlayer3.stage演奏ドラム画面.ListDan_Number++;
-			}
-			else if (TJAPlayer3.ConfigIni.bAIBattleMode)
+                TJAPlayer3.stage演奏ドラム画面.actDan.Start(TJAPlayer3.stage演奏ドラム画面.ListDan_Number);
+                TJAPlayer3.stage演奏ドラム画面.ListDan_Number++;
+            }
+            else if (TJAPlayer3.stageSongSelect.nChoosenSongDifficulty[0] == (int)Difficulty.Tower)
+            {
+                this.counter = new CCounter(0, 255, 1, TJAPlayer3.Timer);
+                TJAPlayer3.Tx.lcTowerGameStartFade.FadeIn();
+            }
+            else if (TJAPlayer3.ConfigIni.bAIBattleMode)
 			{
 				this.counter = new CCounter(0, 3580, 1, TJAPlayer3.Timer);
-			}
+                TJAPlayer3.Tx.lcAIGameStartFade.FadeIn();
+            }
 			else
 			{
 				this.counter = new CCounter(0, 3580, 1, TJAPlayer3.Timer);
-			}
+                TJAPlayer3.Tx.lcGameStartFade.FadeIn();
+            }
 		}
 		public void tフェードイン完了()     // #25406 2011.6.9 yyagi
 		{
@@ -72,8 +90,17 @@ namespace TJAPlayer3
 			}
 			this.counter.Tick();
 
-			if (TJAPlayer3.stageSongSelect.nChoosenSongDifficulty[0] >= (int)Difficulty.Tower)
+			if (TJAPlayer3.stageSongSelect.nChoosenSongDifficulty[0] == (int)Difficulty.Dan)
+            {
+                TJAPlayer3.Tx.lcDanGameStartFade.luaFadeInfo.eFIFOMode = mode;
+                TJAPlayer3.Tx.lcDanGameStartFade.luaFadeInfo.dbValue = counter.CurrentValue / counter.EndValue;
+
+                TJAPlayer3.Tx.lcDanGameStartFade.Update();
+                TJAPlayer3.Tx.lcDanGameStartFade.Draw();
+            }
+            else if (TJAPlayer3.stageSongSelect.nChoosenSongDifficulty[0] == (int)Difficulty.Tower)
 			{
+                /*
 				if (TJAPlayer3.Tx.Tile_Black != null)
 				{
 					TJAPlayer3.Tx.Tile_Black.Opacity = this.mode == EFIFOモード.フェードアウト ? -1000 + counter.CurrentValue : 255 - counter.CurrentValue;
@@ -85,10 +112,22 @@ namespace TJAPlayer3
 						}
 					}
 				}
-			}
+				*/
+                TJAPlayer3.Tx.lcTowerGameStartFade.luaFadeInfo.eFIFOMode = mode;
+                TJAPlayer3.Tx.lcTowerGameStartFade.luaFadeInfo.dbValue = counter.CurrentValue / counter.EndValue;
+
+                TJAPlayer3.Tx.lcTowerGameStartFade.Update();
+                TJAPlayer3.Tx.lcTowerGameStartFade.Draw();
+            }
 			else if (TJAPlayer3.ConfigIni.bAIBattleMode)
-			{
-				if (this.mode == EFIFOモード.フェードアウト)
+            {
+                TJAPlayer3.Tx.lcAIGameStartFade.luaFadeInfo.eFIFOMode = mode;
+                TJAPlayer3.Tx.lcAIGameStartFade.luaFadeInfo.dbValue = counter.CurrentValue / counter.EndValue;
+
+                TJAPlayer3.Tx.lcAIGameStartFade.Update();
+                TJAPlayer3.Tx.lcAIGameStartFade.Draw();
+				/*
+                if (this.mode == EFIFOモード.フェードアウト)
 				{
 					var preTime = (this.counter.CurrentValue >= 2000 ? this.counter.CurrentValue - 2000 : 0) * 2;
 
@@ -155,9 +194,16 @@ namespace TJAPlayer3
 					TJAPlayer3.Tx.SongLoading_Bg_AI.Opacity = 255 - counter.CurrentValue;
 					TJAPlayer3.Tx.SongLoading_Bg_AI.t2D描画(0, 0);
 				}
+				*/
 			}
 			else
-			{
+            {
+                TJAPlayer3.Tx.lcGameStartFade.luaFadeInfo.eFIFOMode = mode;
+                TJAPlayer3.Tx.lcGameStartFade.luaFadeInfo.dbValue = counter.CurrentValue / counter.EndValue;
+
+                TJAPlayer3.Tx.lcGameStartFade.Update();
+                TJAPlayer3.Tx.lcGameStartFade.Draw();
+                /*
 				if (this.mode == EFIFOモード.フェードアウト)
 				{
 					if (TJAPlayer3.Tx.SongLoading_Fade != null)
@@ -191,7 +237,8 @@ namespace TJAPlayer3
 						DrawChara(time, (time <= 80.0 ? 255 : 255f - (float)((Math.Pow((time - 80f), 1.5f) / Math.Pow(220f, 1.5f)) * 255f)), 250f, (time <= 80.0 ? ((time / 80f) * 30f) : 30f - (float)((Math.Pow((time - 80f), 1.5f) / Math.Pow(220f, 1.5f)) * 320f)));
 					}
 				}
-			}
+				*/
+            }
 
 			if (this.mode == EFIFOモード.フェードアウト)
 			{
@@ -210,6 +257,7 @@ namespace TJAPlayer3
 			return 1;
 		}
 
+		/*
 		private void DrawBack(CTexture ShowTex, double time, double max, double end, bool IsExit)
 		{
 			if (ShowTex == null) return;
@@ -273,6 +321,7 @@ namespace TJAPlayer3
 			//左キャラ
 			TJAPlayer3.Tx.SongLoading_Chara.t2D描画(SizeXHarf + TJAPlayer3.Skin.SongLoading_Chara_Move[0] - X, Y, new RectangleF(SizeXHarf, 0, SizeXHarf, SizeY));
 		}
+		*/
 
 		// その他
 

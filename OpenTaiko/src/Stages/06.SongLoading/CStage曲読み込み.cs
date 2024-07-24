@@ -122,6 +122,7 @@ namespace TJAPlayer3
 						? "Please play as accurately as possible."
 						: this.strサブタイトル;
 
+                    /*
 					if( !string.IsNullOrEmpty(タイトル) )
 					{
 						//this.txタイトル = new CTexture( CDTXMania.app.Device, image, CDTXMania.TextureFormat );
@@ -142,21 +143,54 @@ namespace TJAPlayer3
 								this.txサブタイトル = new CTexture( bmpSongSubTitle );
 								txサブタイトル.vcScaleRatio.X = TJAPlayer3.GetSongNameXScaling(ref txサブタイトル, TJAPlayer3.Skin.SongLoading_SubTitle_MaxSize);
 						}
-					}
+
+                    }
 					else
 					{
 						this.txタイトル = null;
 						this.txサブタイトル = null;
-					}
+                    }
+					*/
 
-				}
+
+					if (TJAPlayer3.stageSongSelect.nChoosenSongDifficulty[0] == (int)Difficulty.Dan)
+                    {
+                        TJAPlayer3.Tx.lcDanGameStartFade.GenTitle(タイトル ?? "", サブタイトル ?? "");
+
+                        CTexture? dp = (TJAPlayer3.stage段位選択.段位リスト.stバー情報 != null)
+						? TJAPlayer3.stage段位選択.段位リスト.stバー情報[TJAPlayer3.stage段位選択.段位リスト.n現在の選択行].txDanPlate
+						: null;
+						TJAPlayer3.Tx.lcDanGameStartFade.SetDanPlateTexture(dp);
+					}
+					else if (TJAPlayer3.stageSongSelect.nChoosenSongDifficulty[0] == (int)Difficulty.Tower)
+                    {
+                        TJAPlayer3.Tx.lcTowerGameStartFade.GenTitle(タイトル ?? "", サブタイトル ?? "");
+
+                        int currentTowerType = Array.IndexOf(TJAPlayer3.Skin.Game_Tower_Names, TJAPlayer3.stageSongSelect.rChoosenSong.arスコア[5].譜面情報.nTowerType);
+
+                        if (currentTowerType < 0 || currentTowerType >= TJAPlayer3.Skin.Game_Tower_Ptn)
+                            currentTowerType = 0;
+                        if (currentTowerType < TJAPlayer3.Tx.TowerResult_Tower.Length)
+                            TJAPlayer3.Tx.lcTowerGameStartFade.SetTowerTexture(TJAPlayer3.Tx.TowerResult_Tower[currentTowerType]);
+                        else
+                            TJAPlayer3.Tx.lcTowerGameStartFade.SetTowerTexture(null);
+                    }
+                    else if (TJAPlayer3.ConfigIni.bAIBattleMode)
+                    {
+                        TJAPlayer3.Tx.lcAIGameStartFade.GenTitle(タイトル ?? "", サブタイトル ?? "");
+                    }
+					else
+					{
+                        TJAPlayer3.Tx.lcGameStartFade.GenTitle(タイトル ?? "", サブタイトル ?? "");
+                    }
+                }
 				catch ( CTextureCreateFailedException e )
 				{
 					Trace.TraceError( e.ToString() );
 					Trace.TraceError( "テクスチャの生成に失敗しました。({0})", new object[] { this.strSTAGEFILE } );
-					this.txタイトル = null;
-					this.txサブタイトル = null;
-					this.tx背景 = null;
+					//this.txタイトル = null;
+					//this.txサブタイトル = null;
+					//this.tx背景 = null;
 				}
 
 				base.Activate();
@@ -173,9 +207,9 @@ namespace TJAPlayer3
 			Trace.Indent();
 			try
 			{
-				TJAPlayer3.tテクスチャの解放( ref this.txタイトル );
+				//TJAPlayer3.tテクスチャの解放( ref this.txタイトル );
 				//CDTXMania.tテクスチャの解放( ref this.txSongnamePlate );
-				TJAPlayer3.tテクスチャの解放( ref this.txサブタイトル );
+				//TJAPlayer3.tテクスチャの解放( ref this.txサブタイトル );
                 base.DeActivate();
 			}
 			finally
@@ -186,24 +220,24 @@ namespace TJAPlayer3
 		}
 		public override void CreateManagedResource()
 		{
-			this.pfTITLE = HPrivateFastFont.tInstantiateMainFont(TJAPlayer3.Skin.SongLoading_Title_FontSize );
-			this.pfSUBTITLE = HPrivateFastFont.tInstantiateMainFont(TJAPlayer3.Skin.SongLoading_SubTitle_FontSize);
+			//this.pfTITLE = HPrivateFastFont.tInstantiateMainFont(TJAPlayer3.Skin.SongLoading_Title_FontSize );
+			//this.pfSUBTITLE = HPrivateFastFont.tInstantiateMainFont(TJAPlayer3.Skin.SongLoading_SubTitle_FontSize);
 			pfDanTitle = HPrivateFastFont.tInstantiateMainFont(TJAPlayer3.Skin.Game_DanC_Title_Size);
 			pfDanSubTitle = HPrivateFastFont.tInstantiateMainFont(TJAPlayer3.Skin.Game_DanC_SubTitle_Size);
 
-			this.tx背景 = TJAPlayer3.tテクスチャの生成( this.strSTAGEFILE, false );
+			//this.tx背景 = TJAPlayer3.tテクスチャの生成( this.strSTAGEFILE, false );
 			//this.txSongnamePlate = CDTXMania.tテクスチャの生成( CSkin.Path( @$"Graphics{Path.DirectorySeparatorChar}6_SongnamePlate.png" ) );
 			base.CreateManagedResource();
 		}
 		public override void ReleaseManagedResource()
 		{
-            TJAPlayer3.tDisposeSafely(ref this.pfTITLE);
-            TJAPlayer3.tDisposeSafely(ref this.pfSUBTITLE);
+            //TJAPlayer3.tDisposeSafely(ref this.pfTITLE);
+            //TJAPlayer3.tDisposeSafely(ref this.pfSUBTITLE);
 
             pfDanTitle?.Dispose();
             pfDanSubTitle?.Dispose();
 
-			TJAPlayer3.tテクスチャの解放( ref this.tx背景 );
+			//TJAPlayer3.tテクスチャの解放( ref this.tx背景 );
 			base.ReleaseManagedResource();
 		}
 		public override int Draw()
@@ -260,6 +294,7 @@ namespace TJAPlayer3
 			{
 				void drawPlate()
                 {
+					/*
 					if (TJAPlayer3.Tx.SongLoading_Plate != null)
 					{
 						TJAPlayer3.Tx.SongLoading_Plate.bスクリーン合成 = TJAPlayer3.Skin.SongLoading_Plate_ScreenBlend; //あまりにも出番が無い
@@ -277,9 +312,10 @@ namespace TJAPlayer3
 							TJAPlayer3.Tx.SongLoading_Plate.t2D描画(TJAPlayer3.Skin.SongLoading_Plate_X - (TJAPlayer3.Tx.SongLoading_Plate.sz画像サイズ.Width / 2), TJAPlayer3.Skin.SongLoading_Plate_Y - (TJAPlayer3.Tx.SongLoading_Plate.sz画像サイズ.Height / 2));
 						}
 					}
+					*/
 					//CDTXMania.act文字コンソール.tPrint( 0, 16, C文字コンソール.Eフォント種別.灰, C変換.nParsentTo255( ( this.ct曲名表示.n現在の値 / 30.0 ) ).ToString() );
 
-
+					/*
 					int y = 720 - 45;
 					if (this.txタイトル != null)
 					{
@@ -315,10 +351,12 @@ namespace TJAPlayer3
 							this.txサブタイトル.t2D描画((TJAPlayer3.Skin.SongLoading_SubTitle_X - ((this.txサブタイトル.sz画像サイズ.Width * txサブタイトル.vcScaleRatio.X) / 2)), TJAPlayer3.Skin.SongLoading_SubTitle_Y - (this.txサブタイトル.sz画像サイズ.Height / 2));
 						}
 					}
+					*/
 				}
 
 				void drawPlate_AI()
 				{
+					/*
 					if (TJAPlayer3.Tx.SongLoading_Plate_AI != null)
 					{
 						TJAPlayer3.Tx.SongLoading_Plate_AI.bスクリーン合成 = TJAPlayer3.Skin.SongLoading_Plate_ScreenBlend; //あまりにも出番が無い
@@ -336,9 +374,11 @@ namespace TJAPlayer3
 							TJAPlayer3.Tx.SongLoading_Plate_AI.t2D描画(TJAPlayer3.Skin.SongLoading_Plate_X_AI - (TJAPlayer3.Tx.SongLoading_Plate_AI.sz画像サイズ.Width / 2), TJAPlayer3.Skin.SongLoading_Plate_Y_AI - (TJAPlayer3.Tx.SongLoading_Plate_AI.sz画像サイズ.Height / 2));
 						}
 					}
+					*/
 					//CDTXMania.act文字コンソール.tPrint( 0, 16, C文字コンソール.Eフォント種別.灰, C変換.nParsentTo255( ( this.ct曲名表示.n現在の値 / 30.0 ) ).ToString() );
 
 
+					/*
 					int y = 720 - 45;
 					if (this.txタイトル != null)
 					{
@@ -374,6 +414,7 @@ namespace TJAPlayer3
 							this.txサブタイトル.t2D描画((TJAPlayer3.Skin.SongLoading_SubTitle_X_AI - ((this.txサブタイトル.sz画像サイズ.Width * txサブタイトル.vcScaleRatio.X) / 2)), TJAPlayer3.Skin.SongLoading_SubTitle_Y_AI - (this.txサブタイトル.sz画像サイズ.Height / 2));
 						}
 					}
+					*/
 				}
 
 				#region [ Loading screen (except dan) ]
@@ -382,6 +423,7 @@ namespace TJAPlayer3
 
 				if (TJAPlayer3.stageSongSelect.nChoosenSongDifficulty[0] == (int)Difficulty.Tower)
 				{
+                    /*
 					#region [Tower loading screen]
 
 					if (TJAPlayer3.Skin.Game_Tower_Ptn_Result > 0)
@@ -411,24 +453,40 @@ namespace TJAPlayer3
 
 					#endregion
 					drawPlate();
-				}
+					*/
+
+                    TJAPlayer3.Tx.lcTowerGameStartFade.luaFadeInfo.dbIdleWait = ct待機.CurrentValue / ct待機.EndValue;
+                    TJAPlayer3.Tx.lcTowerGameStartFade.Update();
+                    TJAPlayer3.Tx.lcTowerGameStartFade.Draw();
+                }
 				else if (TJAPlayer3.ConfigIni.bAIBattleMode)
 				{
                     TJAPlayer3.ConfigIni.tInitializeAILevel();
+                    /*
                     TJAPlayer3.Tx.SongLoading_Bg_AI_Wait.t2D描画(0, 0);
 					drawPlate_AI();
-				}
+					*/
+                    TJAPlayer3.Tx.lcAIGameStartFade.luaFadeInfo.dbIdleWait = ct待機.CurrentValue / ct待機.EndValue;
+                    TJAPlayer3.Tx.lcAIGameStartFade.Update();
+                    TJAPlayer3.Tx.lcAIGameStartFade.Draw();
+                }
 				else
 				{
-					#region [Ensou loading screen]
+                    #region [Ensou loading screen]
 
+                    /*
 					if (TJAPlayer3.Tx.SongLoading_BgWait != null) TJAPlayer3.Tx.SongLoading_BgWait.t2D描画(0, 0);
 					if (TJAPlayer3.Tx.SongLoading_Chara != null) TJAPlayer3.Tx.SongLoading_Chara.t2D描画(0, 0);
 
 					drawPlate();
+					*/
 
-					#endregion
-				}
+                    TJAPlayer3.Tx.lcGameStartFade.luaFadeInfo.dbIdleWait = ct待機.CurrentValue / ct待機.EndValue;
+                    TJAPlayer3.Tx.lcGameStartFade.Update();
+                    TJAPlayer3.Tx.lcGameStartFade.Draw();
+
+                    #endregion
+                }
 
 				//CDTXMania.act文字コンソール.tPrint( 0, 0, C文字コンソール.Eフォント種別.灰, this.ct曲名表示.n現在の値.ToString() );
 
@@ -439,6 +497,10 @@ namespace TJAPlayer3
             {
 				#region [ Dan Loading screen　]
 
+				TJAPlayer3.Tx.lcDanGameStartFade.luaFadeInfo.dbIdleWait = ct待機.CurrentValue / ct待機.EndValue;
+                TJAPlayer3.Tx.lcDanGameStartFade.Update();
+                TJAPlayer3.Tx.lcDanGameStartFade.Draw();
+                /*
 				TJAPlayer3.Tx.SongLoading_Bg_Dan.t2D描画(0, 0 - (ct待機.CurrentValue <= 600 ? ct待機.CurrentValue / 10f : 60));
 
 				CTexture dp = (TJAPlayer3.stage段位選択.段位リスト.stバー情報 != null)
@@ -461,9 +523,10 @@ namespace TJAPlayer3
 						}
 					}
 				}
+				*/
 
-				#endregion
-			}
+                #endregion
+            }
 
             switch ( base.ePhaseID )
 			{
@@ -686,9 +749,9 @@ namespace TJAPlayer3
 		private string strSTAGEFILE;
 		private string str曲タイトル;
         private string strサブタイトル;
-		private CTexture txタイトル;
-        private CTexture txサブタイトル;
-		private CTexture tx背景;
+		//private CTexture txタイトル;
+        //private CTexture txサブタイトル;
+		//private CTexture tx背景;
         //private CTexture txSongnamePlate;
 		private DateTime timeBeginLoad;
 		private DateTime timeBeginLoadWAV;
@@ -696,8 +759,8 @@ namespace TJAPlayer3
         private CCounter ct待機;
         private CCounter ct曲名表示;
 
-        private CCachedFontRenderer pfTITLE;
-        private CCachedFontRenderer pfSUBTITLE;
+        //private CCachedFontRenderer pfTITLE;
+        //private CCachedFontRenderer pfSUBTITLE;
 
         private CCachedFontRenderer pfDanTitle = null;
         private CCachedFontRenderer pfDanSubTitle = null;
